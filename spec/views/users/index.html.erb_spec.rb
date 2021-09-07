@@ -63,7 +63,7 @@ describe 'users/index', type: :view do
       render
 
       # expected active users: admin and user from above
-      is_expected.to have_text("2/5 booked active users")
+      is_expected.to have_text("unlimited")
     end
   end
 

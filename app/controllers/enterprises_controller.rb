@@ -37,8 +37,8 @@ class EnterprisesController < ApplicationController
   before_action :chargebee_content_security_policy
   before_action :youtube_content_security_policy
   before_action :require_admin
-  before_action :check_user_limit, only: [:show]
-  before_action :check_domain, only: [:show]
+  before_action :check_user_limit, only: [:hidden]
+  before_action :check_domain, only: [:hidden]
 
   def show
     @current_token = EnterpriseToken.current
@@ -121,7 +121,15 @@ class EnterprisesController < ApplicationController
     true
   end
 
-  
+  def check_user_limit
+    if OpenProject::Enterprise.user_limit_reached?
+      flash.now[:warning] = I18n.t(
+        "warning_user_limit_reached_instructions",
+        current: OpenProject::Enterprise.active_user_count,
+        max: OpenProject::Enterprise.active_user_count
+      )
+    end
+  end
 
   def check_domain
     if OpenProject::Enterprise.token.try(:invalid_domain?)

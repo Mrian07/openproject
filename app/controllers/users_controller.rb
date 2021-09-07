@@ -127,9 +127,8 @@ class UsersController < ApplicationController
       if update_params[:password].present? && @user.change_password_allowed?
         send_information = params[:send_information]
 
-        if @user.invited?
-          # setting a password for an invited user activates them implicitly
-          
+        if @user.activate!
+         
 
           send_information = true
         end

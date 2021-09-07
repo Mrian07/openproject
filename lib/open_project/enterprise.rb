@@ -41,13 +41,32 @@ module OpenProject
         url_helpers.enterprise_path
       end
 
-      
+      def user_limit
+        Hash(token.restrictions)[:active_user_count] if token
+      end
+
+      def active_user_count
+        User.human.active.count
+      end
 
       ##
       # Indicates if there are more active users than the support token allows for.
       #
       # @return [Boolean] True if and only if there is a support token the user limit of which is exceeded.
-      
+      def user_limit_reached?
+        active_user_count >= user_limit if user_limit
+      end
+
+      ##
+      # While the active user limit has not been reached yet it would be reached
+      # if all registered and invited users were to activate their accounts.
+      def imminent_user_limit?
+        User.human.not_locked.count >= user_limit if user_limit
+      end
+
+      def fail_fast?
+        Hash(OpenProject::Configuration["enterprise"])["fail_fast"]
+      end
 
       ##
       # Informs active admins about a user who could not be activated due to
