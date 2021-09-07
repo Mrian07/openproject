@@ -136,7 +136,7 @@ class ApplicationController < ActionController::Base
                 :check_if_login_required,
                 :log_requesting_user,
                 :reset_i18n_fallbacks,
-                :check_session_lifetime,
+                
                 :stop_if_feeds_disabled,
                 :set_cache_buster,
                 :action_hooks,
@@ -508,15 +508,7 @@ class ApplicationController < ActionController::Base
 
   helper_method :admin_first_level_menu_entry
 
-  def check_session_lifetime
-    if session_expired?
-      self.logged_user = nil
-
-      flash[:warning] = I18n.t('notice_forced_logout', ttl_time: Setting.session_ttl)
-      redirect_to(controller: '/account', action: 'login', back_url: login_back_url)
-    end
-    session[:updated_at] = Time.now
-  end
+  
 
   def feed_request?
     if params[:format].nil?

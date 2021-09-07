@@ -31,7 +31,7 @@
 module Accounts::UserLimits
   def enforce_user_limit(
     redirect_to: users_path,
-    hard: OpenProject::Enterprise.fail_fast?,
+    
     flash_now: false
   )
     if user_limit_reached?
@@ -116,10 +116,10 @@ module Accounts::UserLimits
   end
 
   def user_limit_reached?
-    OpenProject::Enterprise.user_limit_reached?
+    
   end
 
   def imminent_user_limit?
-    OpenProject::Enterprise.imminent_user_limit?
+    
   end
 end

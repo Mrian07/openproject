@@ -75,7 +75,7 @@ module OpenProject
       # and the value was cached
       if ensure_fresh || cached_result != false
         fresh_result = connection.migration_context.needs_migration?
-        Rails.cache.write(cache_key, expires_in: 1.hour)
+        Rails.cache.write(cache_key, expires_in: 5.hour)
         return fresh_result
       end
 

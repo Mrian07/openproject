@@ -121,15 +121,7 @@ class EnterprisesController < ApplicationController
     true
   end
 
-  def check_user_limit
-    if OpenProject::Enterprise.user_limit_reached?
-      flash.now[:warning] = I18n.t(
-        "warning_user_limit_reached_instructions",
-        current: OpenProject::Enterprise.active_user_count,
-        max: OpenProject::Enterprise.user_limit
-      )
-    end
-  end
+  
 
   def check_domain
     if OpenProject::Enterprise.token.try(:invalid_domain?)
